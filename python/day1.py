@@ -45,11 +45,11 @@ class Environment():
         self.grid = grid[::-1, :]
         self.default_reword = -0.04
         self.move_prob = move_prob
-        self.reset_agent()
-        self.last_transition_prob = {}
+        self.reset()
 
-    def reset_agent(self):
+    def reset(self):
         self.agent_state = State(0, 0)
+        self.last_transition_prob = {}
         return self.agent_state
 
     def step(self, action):
@@ -142,6 +142,15 @@ class Environment():
         return st
 
 
+class Agent():
+
+    def __init__(self, env):
+        self.actions = env.actions
+
+    def policy(self, state):
+        return random.choice(self.actions)
+
+
 if __name__ == "__main__":
     P, G, B, F = Cell.PASS, Cell.GOAL, Cell.BLOCK, Cell.FALL
 
@@ -152,11 +161,20 @@ if __name__ == "__main__":
     ])
 
     env = Environment(grid)
-    done = False
+    agent = Agent(env)
 
-    while not done:
-        s = env.agent_state
-        a = random.choice(env.actions)
-        next_s, r, done = env.step(a)
-        print(f'state: {s}, action {a}, reward: {r}, next: {next_s}')
-        sleep(1)
+    n_episode = 10
+
+    for i in range(n_episode):
+        s = env.reset()
+        total_reward = 0
+        done = False
+
+        while not done:
+            a = agent.policy(s)
+            next_s, r, done = env.step(a)
+            total_reward += r
+            s = next_s
+            print(
+                f'episode: {i}, state: {s}, action {a}, reward: {r}, total_reward: {total_reward}')
+            # sleep(1)
