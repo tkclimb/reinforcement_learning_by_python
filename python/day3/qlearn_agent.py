@@ -20,12 +20,12 @@ class QLearnAgent(ELAgent):
 
             while not done:
                 a = self.policy(s)
-                n_state, reward, done, _ = env.step(a)
+                next_state, reward, done, _ = env.step(a)
 
-                gain = reward + gamma * max(self.Q[n_state])
+                gain = reward + gamma * max(self.Q[next_state])
                 estimated = self.Q[s][a]
                 self.Q[s][a] += learning_rate * (gain - estimated)
-                s = n_state
+                s = next_state
             else:
                 self.log(reward)
 
@@ -41,3 +41,6 @@ def train():
 if __name__ == "__main__":
     env = gym.make("FrozenLakeEasy-v0")
     train()
+
+
+# %%

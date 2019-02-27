@@ -23,9 +23,9 @@ class MonteCarloAgent(ELAgent):
 
             while not done:
                 a = self.policy(s)
-                n_state, reward, done, _ = self.env.step(a)
+                next_state, reward, done, _ = self.env.step(a)
                 experience.append({"state": s, "action": a, "reward": reward})
-                s = n_state
+                s = next_state
             else:
                 self.log(reward)
 

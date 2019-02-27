@@ -18,16 +18,16 @@ class SARSAAgent(ELAgent):
             a = self.policy(s)
 
             while not done:
-                n_state, reward, done, _ = self.env.step(a)
-                n_action = self.policy(n_state)  # On-policy
+                next_state, reward, done, _ = self.env.step(a)
+                next_action = self.policy(next_state)  # On-policy
                 # choose Q-vale given the next action selected by policy
-                gain = reward + gamma * self.Q[n_state][n_action]
+                gain = reward + gamma * self.Q[next_state][next_action]
                 # estimated value is from current Q-value
                 estimated = self.Q[s][a]
                 # update formula
                 self.Q[s][a] += learning_late * (gain - estimated)
-                s = n_state
-                a = n_action
+                s = next_state
+                a = next_action
             else:
                 self.log(reward)
 
@@ -42,6 +42,3 @@ def train():
 
 if __name__ == "__main__":
     train()
-
-
-# %%
