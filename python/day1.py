@@ -137,7 +137,7 @@ class Environment():
     def states(self):
         st = []
         for idxs, s in np.ndenumerate(self.grid):
-            if s != Cell.B:
+            if s != Cell.BLOCK:
                 st.append(State(*idxs))  # avoid containing block cells
         return st
 
